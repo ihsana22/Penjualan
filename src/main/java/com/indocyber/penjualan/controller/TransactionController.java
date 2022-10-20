@@ -48,10 +48,17 @@ public class TransactionController {
     }
 
     @GetMapping("/confirm")
-    public String confirm(@RequestParam(defaultValue = "")Double subTotal,Model model,Authentication authentication){
+    public String confirm(Model model,Authentication authentication){
+        Integer page = 1;
         String username = authentication.getName();
-        model.addAttribute("subTotal",subTotal);
-        service.insertTransactionDetail(subTotal,username);
+        var dto =service.getListCart(page,username);
+        List<TransactionGridDTO> list = dto.stream().toList();
+        double total = 0;
+        for (TransactionGridDTO tr : list){
+            total=total+tr.getTotal();
+            model.addAttribute("breadCrumbs","Sub Total : Rp. "+total);
+            service.insertTransactionDetail(username,total);
+        }
         return "redirect:/transaction/cart";
     }
     @GetMapping("/report")

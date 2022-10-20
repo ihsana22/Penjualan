@@ -32,26 +32,26 @@ public class TransactionHeaderServiceImpl implements TransactionHeaderService {
     @Autowired
     private TransactionDetailRepository transactionDetailRepository;
 
-//    public String getDocumentNumber() {
-//        String lastNumber = transactionHeaderRepository.getHighestNumber();
-//        String docNumber = "";
-//
-//        if (lastNumber == null){
-//            docNumber = "001";
-//        } else {
-//            int number = Integer.parseInt(lastNumber) + 1;
-//
-//            if (number <= 9){
-//                docNumber = "00"+number;
-//            }
-//            else if(number <= 99){
-//                docNumber = "0"+number;
-//            } else {
-//                docNumber = Integer.toString(number);
-//            }
-//        }
-//        return docNumber;
-//    }
+    public String getDocumentNumber() {
+        String lastNumber = transactionHeaderRepository.getHighestNumber();
+        String docNumber = "";
+
+        if (lastNumber == null){
+            docNumber = "001";
+        } else {
+            int number = Integer.parseInt(lastNumber) + 1;
+
+            if (number <= 9){
+                docNumber = "00"+number;
+            }
+            else if(number <= 99){
+                docNumber = "0"+number;
+            } else {
+                docNumber = Integer.toString(number);
+            }
+        }
+        return docNumber;
+    }
 
 
     private final Integer rowInPage = 10;
@@ -85,10 +85,10 @@ public class TransactionHeaderServiceImpl implements TransactionHeaderService {
     }
 
     @Override
-    public void insertTransactionDetail(Double subTotal,String username) {
+    public void insertTransactionDetail(String username,double total) {
         TransactionDetail transactionDetail = new TransactionDetail();
-        transactionDetail.setTransactionCode("TRX");
-        transactionDetail.setSubTotal(subTotal);
+        transactionDetail.setTransactionCode(getDocumentNumber());
+        transactionDetail.setSubTotal(total);
         transactionDetailRepository.save(transactionDetail);
         List<TransactionHeader> transactionHeader = transactionHeaderRepository.getCart(username);
          for (TransactionHeader tr : transactionHeader){

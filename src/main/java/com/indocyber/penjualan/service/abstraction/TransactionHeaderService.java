@@ -9,5 +9,5 @@ public interface TransactionHeaderService {
 
     Page<TransactionGridDTO> getListCart(Integer page,String username);
 
-    void insertTransactionDetail(Double subTotal,String username);
+    void insertTransactionDetail(String username,double total);
 }

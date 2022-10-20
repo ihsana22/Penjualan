@@ -36,12 +36,12 @@ public interface TransactionHeaderRepository extends JpaRepository<TransactionHe
             """)
     Page<TransactionGridDTO> getAllCart(Pageable pageable,@Param("user") String username);
 
-//    @Query("""
-//            SELECT td.transactionCode
-//            FROM TransactionHeader th
-//            JOIN th.transactionDetail td
-//            """)
-//    String getHighestNumber();
+    @Query("""
+            SELECT td.transactionCode
+            FROM TransactionHeader th
+            JOIN th.transactionDetail td
+            """)
+    String getHighestNumber();
 
     @Query("""
             SELECT th
