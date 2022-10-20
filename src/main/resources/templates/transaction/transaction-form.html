@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body" th:data-role="${#authentication.getAuthorities()}">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+<main>
+    <div class="grid-tiles product-index">
+        <div class="tiles-container">
+            <div class="tile" th:each="product : ${product}" th:object="${product}">
+                <div class="image-container" th:if="*{imagePath == null}">
+                    <img th:src="@{/resources/image/product/no-image.jpg}">
+                </div>
+                <div class="image-container" th:if="*{imagePath != null}">
+                    <img th:src="@{/resources/image/product/{path}(path=*{imagePath})}">
+                </div>
+                <div class="name" th:text="*{productName}"></div>
+                <s><div class="name" th:if="${product.discount != 0}" th:text="${#numbers.formatCurrency(product.price)}"></div></s>
+                <div class="price" th:text="${#numbers.formatCurrency(product.priceDiscount)}"></div>
+                <div class="grid-container product-index">
+                    <form method="post" th:attr="action=@{/transaction/buy(productCode=${product.productCode})}" th:object="${transaction}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <table>
+                            <tr>
+                                <td><label>Quantity*:</label></td>
+                                <td>
+                                    <input type="number" th:field="*{quantity}" min="1">
+                                    <input type="hidden" th:field="*{transactionNumber}">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button class="blue-button" type="submit">Add To Cart</button>
+                        <a th:href="@{/product/index}" class="blue-button delete-button">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

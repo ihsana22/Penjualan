@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body" th:data-role="${#authentication.getAuthorities()}">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+<main>
+  <div class="grid-tiles product-index">
+    <div>
+      <div class="tile" th:each="product : ${grid}" th:object="${product}">
+        <div class="image-container-detail" th:if="*{imagePath == null}">
+          <img th:src="@{/resources/image/product/no-image.jpg}">
+        </div>
+        <div class="image-container-detail" th:if="*{imagePath != null}">
+          <img th:src="@{/resources/image/product/{path}(path=*{imagePath})}">
+        </div>
+        <div class="grid-container category-index">
+          <table>
+            <thead>
+            <tr>
+              <th>Action</th>
+              <th>Product Name</th>
+              <th>Harga</th>
+              <th>Ukuran Barang</th>
+              <th>Unit Barang</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${grid}" th:object="${product}">
+              <td>
+                <a th:href="@{/product/index}" class="blue-button">BACK</a>
+                <a th:href="@{/product/buy}" class="blue-button">BUY</a>
+              </td>
+              <td th:text="*{productName}"></td>
+              <td th:text="${#numbers.formatCurrency(product.priceDiscount)}"></td>
+              <td th:text="*{dimension}"></td>
+              <td th:text="*{unit}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>
