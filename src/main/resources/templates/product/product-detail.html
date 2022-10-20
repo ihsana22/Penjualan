@@ -18,7 +18,6 @@
           <table>
             <thead>
             <tr>
-              <th>Action</th>
               <th>Product Name</th>
               <th>Harga</th>
               <th>Ukuran Barang</th>
@@ -27,10 +26,6 @@
             </thead>
             <tbody>
             <tr th:each="product : ${grid}" th:object="${product}">
-              <td>
-                <a th:href="@{/product/index}" class="blue-button">BACK</a>
-                <a th:href="@{/product/buy}" class="blue-button">BUY</a>
-              </td>
               <td th:text="*{productName}"></td>
               <td th:text="${#numbers.formatCurrency(product.priceDiscount)}"></td>
               <td th:text="*{dimension}"></td>
