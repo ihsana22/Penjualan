@@ -11,22 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter @Getter
+//@IdClass(TransactionHeaderId.class)
 @Table(name = "TransactionHeader")
 public class TransactionHeader {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TransactionNumber")
-    private Integer transactionNumber;
-
-    @Column(name = "DocumentCode")
-    private String documentCode;
+    @EmbeddedId
+    private TransactionHeaderId transactionHeaderId;
 
     @Column(name = "Total")
     private double total;
-
-    @Column(name = "TransactionDate")
-    private LocalDate transactionDate;
 
     @Column(name = "Quantity")
     private int quantity;
@@ -39,8 +31,8 @@ public class TransactionHeader {
     private String username;
 
     @ManyToOne
-    @JoinColumn(name = "TransactionCode")
     private TransactionDetail transactionDetail;
+
     @ManyToOne
     @JoinColumn(name = "ProductCode",insertable = false,updatable = false)
     private Product product;

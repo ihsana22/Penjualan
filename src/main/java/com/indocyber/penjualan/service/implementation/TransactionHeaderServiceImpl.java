@@ -2,10 +2,10 @@ package com.indocyber.penjualan.service.implementation;
 
 import com.indocyber.penjualan.dto.product.ProductGridDTO;
 import com.indocyber.penjualan.dto.transaction.InsertTransaction;
+import com.indocyber.penjualan.dto.transaction.ListProductReportDTO;
+import com.indocyber.penjualan.dto.transaction.ReportGridDTO;
 import com.indocyber.penjualan.dto.transaction.TransactionGridDTO;
-import com.indocyber.penjualan.entity.Product;
-import com.indocyber.penjualan.entity.TransactionDetail;
-import com.indocyber.penjualan.entity.TransactionHeader;
+import com.indocyber.penjualan.entity.*;
 import com.indocyber.penjualan.repository.ProductRepository;
 import com.indocyber.penjualan.repository.TransactionDetailRepository;
 import com.indocyber.penjualan.repository.TransactionHeaderRepository;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,26 @@ public class TransactionHeaderServiceImpl implements TransactionHeaderService {
         }
         return docNumber;
     }
+    public String getTransactionNumber() {
+        String lastNumber = transactionDetailRepository.getHighestNumber();
+        String docNumber = "";
+
+        if (lastNumber == null){
+            docNumber = "001";
+        } else {
+            int number = Integer.parseInt(lastNumber) + 1;
+
+            if (number <= 9){
+                docNumber = "00"+number;
+            }
+            else if(number <= 99){
+                docNumber = "0"+number;
+            } else {
+                docNumber = Integer.toString(number);
+            }
+        }
+        return docNumber;
+    }
 
 
     private final Integer rowInPage = 10;
@@ -61,10 +82,13 @@ public class TransactionHeaderServiceImpl implements TransactionHeaderService {
         Product product = productRepository.findById(productCode).get();
         ProductGridDTO productGridDTO = new ProductGridDTO(product.getProductCode(),product.getProductName(),product.getPrice(),product.getCurrency(),product.getDiscount(),product.getDimension(),product.getUnit(),product.getStock(),product.getImagePath());
         TransactionHeader transactionHeader = transactionHeaderRepository.getByProduct(productCode,username);
+        dto.setDocumentCode("TRX");
+        dto.setDocumentNumber(getDocumentNumber());
+        TransactionHeaderId transactionHeaderId=new TransactionHeaderId(dto.getDocumentNumber(),dto.getDocumentCode());
         if (transactionHeader == null) {
             TransactionHeader entity = new TransactionHeader();
             entity.setTransactionDetail(null);
-            entity.setDocumentCode("TRX");
+            entity.setTransactionHeaderId(transactionHeaderId);
             entity.setUsername(username);
             entity.setProductCode(productCode);
             entity.setQuantity(dto.getQuantity());
@@ -87,14 +111,29 @@ public class TransactionHeaderServiceImpl implements TransactionHeaderService {
     @Override
     public void insertTransactionDetail(String username,double total) {
         TransactionDetail transactionDetail = new TransactionDetail();
-        transactionDetail.setTransactionCode(getDocumentNumber());
-        transactionDetail.setSubTotal(total);
-        transactionDetailRepository.save(transactionDetail);
         List<TransactionHeader> transactionHeader = transactionHeaderRepository.getCart(username);
+        transactionDetail.setSubTotal(total);
+        transactionDetail.setTransactionDate(LocalDate.now());
+        TransactionDetailId transactionDetailId = new TransactionDetailId();
+        transactionDetailId.setTransactionCode("TRX");
+        transactionDetailId.setTransactionNumber(getTransactionNumber());
+        transactionDetail.setTransactionDetailId(transactionDetailId);
          for (TransactionHeader tr : transactionHeader){
-             tr.setTransactionDate(LocalDate.now());
+             transactionDetailRepository.save(transactionDetail);
              tr.setTransactionDetail(transactionDetail);
              transactionHeaderRepository.save(tr);
         }
+    }
+
+    @Override
+    public List<ReportGridDTO> getListReport(String username) {
+        List<ReportGridDTO> listReport=transactionDetailRepository.findReport(username);
+        return listReport;
+    }
+
+    @Override
+    public List<ListProductReportDTO> getListProductReport(String username) {
+        List<ListProductReportDTO> listProductReport = transactionDetailRepository.findProductReport(username);
+        return listProductReport;
     }
 }

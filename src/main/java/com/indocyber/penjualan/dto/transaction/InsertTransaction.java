@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InsertTransaction {
-    private Integer transactionNumber;
+    private String documentNumber;
 
     private String documentCode;
 

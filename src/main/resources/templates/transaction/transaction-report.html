@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${breadCrumbs})}"></header>
+<main>
+    <div class="grid-container category-index">
+        <table>
+            <thead>
+            <tr>
+                <th>Invoice Number</th>
+                <th>User</th>
+                <th>Transaction Date</th>
+                <th>Total</th>
+                <th>Product</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="report : ${dto}"  th:object="${report}">
+                <td th:text="(*{transactionCode} +'-'+ *{transactionNumber})"></td>
+                <td th:text="*{username}"></td>
+                <td th:text="*{transactionDate}"></td>
+                <td th:text="*{subTotal}"></td>
+                <td  th:each="pro : ${product}" colspan="2">
+                    <p th:text="(${pro.productName}+' x '+${pro.quantity})"></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+<th:block th:replace="~{layout :: javascript}"></th:block>
+</body>
+</html>

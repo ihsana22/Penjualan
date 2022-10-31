@@ -25,10 +25,10 @@
 			<i class="fas fa-box-open"></i>
 			<span>Cart</span>
 		</a>
-<!--		<a class="menu product" th:href="@{/transaction/report}">-->
-<!--			<i class="fas fa-box-open"></i>-->
-<!--			<span>Report</span>-->
-<!--		</a>-->
+		<a class="menu product" th:href="@{/transaction/report}">
+			<i class="fas fa-box-open"></i>
+			<span>Report</span>
+		</a>
 	</nav>
     <header th:fragment="header (breadCrumbs)">
         <div class="bread-crumbs">
@@ -36,7 +36,7 @@
         </div>
         <div class="user-wrapper">
             <div class="user">
-                <span class="full-name" sec:authentication="name">anonymous</span>
+                <span class="full-name"sec:authentication="name">anonymous</span>
 <!--                <span class="role" sec:authentication="principal.authorities">guest</span>-->
             </div>
             <div class="sign-out">
@@ -49,8 +49,8 @@
     </header>
     <main></main>
 	<footer th:fragment="footer">
-	    Copyrights &copy; 2021
-	    <span class="author">Boby Widjaja</span>
+	    Copyrights &copy; 2022
+	    <span class="author">DD Ihsana Latif</span>
 	    All rights reserved.
 	</footer>
 	<th:block th:fragment="javascript">

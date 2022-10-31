@@ -1,6 +1,8 @@
 package com.indocyber.penjualan.controller;
 
 import com.indocyber.penjualan.dto.transaction.InsertTransaction;
+import com.indocyber.penjualan.dto.transaction.ListProductReportDTO;
+import com.indocyber.penjualan.dto.transaction.ReportGridDTO;
 import com.indocyber.penjualan.dto.transaction.TransactionGridDTO;
 import com.indocyber.penjualan.service.abstraction.TransactionHeaderService;
 import lombok.Getter;
@@ -56,14 +58,20 @@ public class TransactionController {
         double total = 0;
         for (TransactionGridDTO tr : list){
             total=total+tr.getTotal();
-            model.addAttribute("breadCrumbs","Sub Total : Rp. "+total);
-            service.insertTransactionDetail(username,total);
         }
+        model.addAttribute("breadCrumbs","Sub Total : Rp. "+total);
+        service.insertTransactionDetail(username,total);
         return "redirect:/transaction/cart";
     }
     @GetMapping("/report")
     public String report(Authentication authentication,Model model){
-
+        String username = authentication.getName();
+        List<ReportGridDTO> listReport = service.getListReport(username);
+        List<ListProductReportDTO> listProductReport = service.getListProductReport(username);
+        System.out.println(listProductReport.toString());
+        model.addAttribute("dto",listReport);
+        model.addAttribute("product",listProductReport.listIterator());
+        model.addAttribute("breadCrumbs","Report Transaction");
      return "transaction/transaction-report";
     }
 }

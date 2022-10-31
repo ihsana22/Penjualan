@@ -22,8 +22,38 @@
                     <div class="image-container" th:if="*{imagePath != null}">
                         <img th:src="@{/resources/image/product/{path}(path=*{imagePath})}">
                     </div>
-                    <div class="name" th:text="*{productName}"></div>
-                    <div class="price" th:text="*{#numbers.formatCurrency(total)}"></div>
+                    <table>
+                    <tbody>
+                    <tr>
+                        <td><label>Product Name: </label></td>
+                        <td>
+                            <div class="name" th:text="*{productName}"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Harga Per Item: </label></td>
+                        <td>
+                            <div class="name" th:text="*{#numbers.formatCurrency(price)}"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Jumlah Beli:</label>
+                        </td>
+                        <td>
+                            <div class="name" th:text="*{quantity}"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Total Harga:</label>
+                        </td>
+                        <td>
+                            <div class="price" th:text="*{#numbers.formatCurrency(total)}"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
                 </div>
             </div>
         </form>
