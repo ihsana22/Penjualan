@@ -2,7 +2,6 @@ package com.indocyber.penjualan.service.implementation;
 
 import com.indocyber.penjualan.dto.product.ProductGridDTO;
 import com.indocyber.penjualan.dto.transaction.InsertTransaction;
-import com.indocyber.penjualan.dto.transaction.ListProductReportDTO;
 import com.indocyber.penjualan.dto.transaction.ReportGridDTO;
 import com.indocyber.penjualan.dto.transaction.TransactionGridDTO;
 import com.indocyber.penjualan.entity.*;
@@ -18,9 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TransactionHeaderServiceImpl implements TransactionHeaderService {
@@ -131,9 +128,4 @@ public class TransactionHeaderServiceImpl implements TransactionHeaderService {
         return listReport;
     }
 
-    @Override
-    public List<ListProductReportDTO> getListProductReport(String username) {
-        List<ListProductReportDTO> listProductReport = transactionDetailRepository.findProductReport(username);
-        return listProductReport;
-    }
 }

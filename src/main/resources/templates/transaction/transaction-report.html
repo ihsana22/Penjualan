@@ -22,8 +22,7 @@
                 <td th:text="*{username}"></td>
                 <td th:text="*{transactionDate}"></td>
                 <td th:text="*{subTotal}"></td>
-                <td  th:each="pro : ${product}" colspan="2">
-                    <p th:text="(${pro.productName}+' x '+${pro.quantity})"></p>
+                <td  th:text="(*{productName}+' x '+*{quantity})" colspan="2">
                 </td>
             </tr>
             </tbody>

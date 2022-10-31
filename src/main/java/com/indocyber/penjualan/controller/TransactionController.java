@@ -1,21 +1,16 @@
 package com.indocyber.penjualan.controller;
 
 import com.indocyber.penjualan.dto.transaction.InsertTransaction;
-import com.indocyber.penjualan.dto.transaction.ListProductReportDTO;
 import com.indocyber.penjualan.dto.transaction.ReportGridDTO;
 import com.indocyber.penjualan.dto.transaction.TransactionGridDTO;
 import com.indocyber.penjualan.service.abstraction.TransactionHeaderService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/transaction")
@@ -67,10 +62,7 @@ public class TransactionController {
     public String report(Authentication authentication,Model model){
         String username = authentication.getName();
         List<ReportGridDTO> listReport = service.getListReport(username);
-        List<ListProductReportDTO> listProductReport = service.getListProductReport(username);
-        System.out.println(listProductReport.toString());
         model.addAttribute("dto",listReport);
-        model.addAttribute("product",listProductReport.listIterator());
         model.addAttribute("breadCrumbs","Report Transaction");
      return "transaction/transaction-report";
     }

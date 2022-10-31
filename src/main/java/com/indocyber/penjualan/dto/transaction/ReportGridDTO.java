@@ -16,5 +16,7 @@ public class ReportGridDTO {
     private Double subTotal;
     private LocalDate transactionDate;
     private String username;
+    private String productName;
+    private Integer quantity;
 
 }
