@@ -61,7 +61,7 @@ public class TransactionController {
     @GetMapping("/report")
     public String report(Authentication authentication,Model model){
         String username = authentication.getName();
-        List<ReportGridDTO> listReport = service.getListReport(username);
+        List<ReportGridDTO> listReport=service.getListReport(username);
         model.addAttribute("dto",listReport);
         model.addAttribute("breadCrumbs","Report Transaction");
      return "transaction/transaction-report";

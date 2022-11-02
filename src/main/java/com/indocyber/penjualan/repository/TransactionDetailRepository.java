@@ -9,15 +9,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TransactionDetailRepository extends JpaRepository<TransactionDetail,String> {
-    @Query("""
-            SELECT td
-            FROM TransactionDetail td
-            """)
-    TransactionDetail findTd();
+
 
     @Query("""
             SELECT DISTINCT new com.indocyber.penjualan.dto.transaction.ReportGridDTO
-            (td.transactionDetailId.transactionNumber,td.transactionDetailId.transactionCode,td.subTotal,td.transactionDate,us.username,pr.productName,th.quantity)
+            (td.transactionDetailId.transactionNumber,td.transactionDetailId.transactionCode,td.subTotal,td.transactionDate,us.username)
             FROM TransactionDetail td
             JOIN td.transactionHeaderList th
             JOIN th.product pr

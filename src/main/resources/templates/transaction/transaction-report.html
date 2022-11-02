@@ -22,8 +22,7 @@
                 <td th:text="*{username}"></td>
                 <td th:text="*{transactionDate}"></td>
                 <td th:text="*{subTotal}"></td>
-                <td  th:text="(*{productName}+' x '+*{quantity})" colspan="2">
-                </td>
+                <td><label  th:each="item : *{items}"> <br><label th:text="${item.productName} +' X '+${item.quantity}"></label></label></td>
             </tr>
             </tbody>
         </table>
